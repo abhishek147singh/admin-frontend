@@ -1,0 +1,5 @@
+<div class="toaster">
+    @for (toast of toasts; track toast.id) {
+        <app-toast [toast]="toast" (removeToasterEmt)="remove($event)"></app-toast>
+    }
+</div>

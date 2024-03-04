@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'admin-frontend' title`, () => {
+  it(`should have the 'testzone-speed-reading-drills-admin-frontend' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('admin-frontend');
+    expect(app.title).toEqual('testzone-speed-reading-drills-admin-frontend');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, admin-frontend');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, testzone-speed-reading-drills-admin-frontend');
   });
 });

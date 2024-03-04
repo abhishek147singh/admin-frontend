@@ -1,0 +1,107 @@
+.custom-toast {
+    width: 300px;
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: rgba($color: #000000, $alpha: 0.8);
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 4px 4px rgba($color: #000000, $alpha: 0.1);
+    padding-bottom: 0;
+    cursor: pointer;
+    z-index: 2000;
+    position: relative;
+    top: 0;
+    left: 0;
+
+    div{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.status-icon{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: aliceblue;
+            border-color: rgba($color: #000000, $alpha: 0.4);
+        }
+
+        &.text{
+            justify-content: flex-start;
+            font-size: 14px;
+        }
+
+        .close-btn{
+            padding: 0 6px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            background: #fff;
+        }
+    }
+
+    &.Success{
+        .status-icon{
+            color: #fff;
+            background-color: #07bc0c;
+        }
+    }
+
+    &.Error{
+        .status-icon{
+            color: #fff;
+            background-color: #e74c3c;
+        }
+    }
+
+    &.Warn{
+        .status-icon{
+            color: #f1c40f;
+            background-color: #fff;
+            font-size: 20px;    
+        }
+    }
+
+    &.info{
+        .status-icon{
+            color: #fff;
+            background-color: #3498db;   
+        }
+    }
+
+    .progress{
+        grid-column-start: 1;
+        grid-column-end: 4;
+        width: calc(100% + 20px);
+        height: 5px;
+        background-color: #07bc0c;
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+        margin-left: -10px;
+        margin-right: -10px;
+
+        &.Success{
+            background-color: #07bc0c;
+        }
+    
+        &.Error{
+            background-color: #e74c3c;
+        }
+    
+        &.Warn{
+            background-color: #f1c40f;
+        }
+    
+        &.info{
+            background-color: #3498db;   
+        }
+    }
+}

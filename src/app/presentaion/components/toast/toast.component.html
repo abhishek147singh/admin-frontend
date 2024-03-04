@@ -1,0 +1,29 @@
+@if (toast) {
+    <div class="custom-toast" [ngClass]="toast.type" @toaster (mouseover)="isHover = true" (mouseout)="isHover = false">
+        <div class="status-icon">
+            @switch (toast.type) {
+                @case (toasterTypes.Success) {
+                    <i class="fa-solid fa-check"></i>
+                }
+                @case (toasterTypes.Error) {
+                    <i class="fa-solid fa-exclamation"></i>
+                }
+                @case (toasterTypes.Warn) {
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                }
+                @default{
+                    <i class="fa-solid fa-info"></i> 
+                }
+            }
+        </div>
+        <div class="text">
+            {{toast.text}} 
+        </div>
+        <div>
+            <button class="close-btn" (click)="remove(toast.id)">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="progress" [ngStyle]="{'width': progress + '%'}" [ngClass]="toast.type"></div>
+    </div>
+}

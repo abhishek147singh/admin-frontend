@@ -10,5 +10,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'admin-frontend';
+  title = 'testzone-speed-reading-drills-admin-frontend';
 }
