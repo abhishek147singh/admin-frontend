@@ -1,0 +1,13 @@
+<ng-template #editNg let-data="adtData" let-emitter="captureEvents">
+    <app-dt-edit-button [data]="data" (emitter)="emitter($event)"></app-dt-edit-button>
+</ng-template>
+
+<ng-template #removeNg let-data="adtData" let-emitter="captureEvents">
+    <app-dt-delete-button [data]="data" (emitter)="emitter($event)"></app-dt-delete-button>
+</ng-template>
+
+<div class="card" style="padding-top: 1em;">
+    <div class="card-body">
+        <table datatable [dtOptions]="dtOptions" class="row-border hover"></table>
+    </div>
+</div>
