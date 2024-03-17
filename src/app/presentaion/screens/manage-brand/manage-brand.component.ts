@@ -43,13 +43,9 @@ export class ManageBrandComponent implements OnInit {
     return this.brandForm.controls;
   }
 
-  create(){
+  create(){}
 
-  }
-
-  update(){
-
-  }
+  update(){}
 
   Edit(rowData:any) {
     console.log('edit', rowData)
