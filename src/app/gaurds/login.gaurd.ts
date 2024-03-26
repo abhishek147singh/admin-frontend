@@ -11,7 +11,7 @@ export const LoginGaurd:CanMatchFn = (route: Route, segments: UrlSegment[]) => {
 
     return store.select(getAuth).pipe(
         map(authData => {
-            if(!authData.tocken || authData.tocken === ''){
+            if(!authData.token || authData.token === ''){
                 
                 return router.parseUrl('login');
             }

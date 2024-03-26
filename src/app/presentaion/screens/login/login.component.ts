@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy{
   onSubmit(){
     if(this.username !== ''){
       if(this.password !== ''){
-        this.store.dispatch(login({username:this.username, pass:this.password, redirectionUrl: 'dashboard'}))
+        this.store.dispatch(login({email:this.username, pass:this.password, redirectionUrl: 'dashboard'}))
         
         this.error = '';
       }else{

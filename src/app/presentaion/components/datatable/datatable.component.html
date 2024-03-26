@@ -8,6 +8,8 @@
 
 <div class="card" style="padding-top: 1em;">
     <div class="card-body">
-        <table datatable [dtOptions]="dtOptions" class="row-border hover"></table>
+        @if (hasData) {
+            <table datatable [dtOptions]="dtOptions" class="row-border hover"></table>
+        }
     </div>
 </div>

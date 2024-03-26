@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CKEditorModule } from 'ng2-ckeditor';
-import { DatatableComponent } from '../../components/datatable/datatable.component';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, take } from 'rxjs';
 import { TableColType } from '../../../core/domain/Datatable/TableColType.model';
-import { BrandService } from '../../../services/brand.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { DatatableComponent } from '../../components/datatable/datatable.component';
+import { CategoryService } from '../../../services/category.service';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 @Component({
-  selector: 'app-manage-brand',
+  selector: 'app-manage-category',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, CKEditorModule, DatatableComponent],
-  templateUrl: './manage-brand.component.html',
-  styleUrl: './manage-brand.component.scss'
+  templateUrl: './manage-category.component.html',
+  styleUrl: './manage-category.component.scss'
 })
-export class ManageBrandComponent implements OnInit {
+export class ManageCategoryComponent  implements OnInit {
   isUpdateMode:boolean = false;
   updateID:string = '';
   previewImage:string = '';
@@ -22,7 +22,7 @@ export class ManageBrandComponent implements OnInit {
   dataObs:Observable<any> | undefined;
   tableCols: TableColType[] = [];
 
-  brandForm:FormGroup = new FormGroup({
+  categoryForm:FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     image: new FormControl('', [Validators.required]),
@@ -31,10 +31,10 @@ export class ManageBrandComponent implements OnInit {
 
   @ViewChild('dttable') dttable:DatatableComponent|undefined;
 
-  constructor(private brandService:BrandService, private toasterSerice:ToasterService){}
+  constructor(private categoryService:CategoryService, private toasterSerice:ToasterService){}
 
   ngOnInit(): void {
-    this.dataObs = this.brandService.get();
+    this.dataObs = this.categoryService.get();
 
     this.tableCols = [
       { title: 'Name', data: 'name' , type: 'text'},
@@ -43,21 +43,21 @@ export class ManageBrandComponent implements OnInit {
   }
 
   get f() {
-    return this.brandForm.controls;
+    return this.categoryForm.controls;
   }
 
   create(){
-    const name = this.brandForm.get('name')?.value;
-    const description = this.brandForm.get('description')?.value;
-    const image = this.brandForm.get('image')?.value;
-    const imageSource = this.brandForm.get('imageSrouce')?.value;
+    const name = this.categoryForm.get('name')?.value;
+    const description = this.categoryForm.get('description')?.value;
+    const image = this.categoryForm.get('image')?.value;
+    const imageSource = this.categoryForm.get('imageSrouce')?.value;
 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
     formData.append('image', imageSource);
 
-    this.brandService.create(formData).pipe(take(1)).subscribe({
+    this.categoryService.create(formData).pipe(take(1)).subscribe({
       next:data => {
         this.toasterSerice.success('Create successfully!!');
         this.dttable?.reloadTable();
@@ -70,17 +70,17 @@ export class ManageBrandComponent implements OnInit {
   }
 
   update(){
-    const name = this.brandForm.get('name')?.value;
-    const description = this.brandForm.get('description')?.value;
-    const image = this.brandForm.get('image')?.value;
-    const imageSource = this.brandForm.get('imageSrouce')?.value;
+    const name = this.categoryForm.get('name')?.value;
+    const description = this.categoryForm.get('description')?.value;
+    const image = this.categoryForm.get('image')?.value;
+    const imageSource = this.categoryForm.get('imageSrouce')?.value;
 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
     formData.append('image', imageSource || this.previewImage);
 
-    this.brandService.update(this.updateID, formData).pipe(take(1)).subscribe({
+    this.categoryService.update(this.updateID, formData).pipe(take(1)).subscribe({
       next:(response => {
         this.toasterSerice.success('Updated successfully!');
         this.dttable?.reloadTable();
@@ -95,12 +95,13 @@ export class ManageBrandComponent implements OnInit {
     const id = rowData._id;
     console.log('edit', id);
 
-    this.brandService.getById(id).pipe(take(1)).subscribe({
+    this.categoryService.getById(id).pipe(take(1)).subscribe({
       next:(response => {
         this.updateID = id;
         this.isUpdateMode = true;
-        this.previewImage = response.image;
-        this.brandForm.patchValue({
+        this.previewImage = response.image; 
+
+        this.categoryForm.patchValue({
           name:response.name,
           description:response.description,
           image:'',
@@ -118,7 +119,7 @@ export class ManageBrandComponent implements OnInit {
     const id = rowData._id;
     console.log('delete', id);
 
-    this.brandService.delete(id).pipe(take(1)).subscribe({
+    this.categoryService.delete(id).pipe(take(1)).subscribe({
       next:(response => {
         this.toasterSerice.success('Deleted successfully!!');
         this.dttable?.reloadTable();
@@ -133,7 +134,7 @@ export class ManageBrandComponent implements OnInit {
     this.isUpdateMode = false;
     this.updateID = '';
     this.previewImage = '';
-    this.brandForm.patchValue({
+    this.categoryForm.patchValue({
       name:'',
       description:'',
       image:'',
@@ -144,7 +145,7 @@ export class ManageBrandComponent implements OnInit {
   onImageUpload(event: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.brandForm.patchValue({
+      this.categoryForm.patchValue({
         'imageSrouce': file
       });
 

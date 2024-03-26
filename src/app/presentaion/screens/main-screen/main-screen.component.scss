@@ -4,3 +4,10 @@ main{
     max-height: calc(100vh - 58px);
     overflow-y: auto;
 }
+
+.logout-btn{
+    background-color: transparent;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-left: auto;
+}

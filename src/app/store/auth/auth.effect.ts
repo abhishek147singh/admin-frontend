@@ -20,7 +20,7 @@ export class AuthEffect {
         this.actions$.pipe(
             ofType(login),
             switchMap((action) => {
-                return this.authService.login(action.username, action.pass).pipe(
+                return this.authService.login(action.email, action.pass).pipe(
                     map((data) =>{ 
                         this.router.navigate([action.redirectionUrl]);
                         this.secureStorageService.setItem('auth', data);

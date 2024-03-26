@@ -61,8 +61,8 @@ export class MainScreenComponent implements OnInit , OnDestroy {
   ngOnInit(): void {
     this.authDataSubscription = this.store.select(getAuth).subscribe({
       next:(authData => {
-        if(authData.userName){
-          this.userName = authData.userName;
+        if(authData.name){
+          this.userName = authData.name;
           this.loadding = false;
         }else{
           // this.router.navigate(['login']);

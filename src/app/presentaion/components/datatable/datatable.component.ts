@@ -1,9 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { Router, UrlTree, PRIMARY_OUTLET } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
-import { Observable, Subscription, Subject, switchMap, of } from 'rxjs';
-import { AppState } from '../../../store/app.state';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { DtEditButtonComponent } from '../dt-edit-button/dt-edit-button.component';
 import { DtDeleteButtonComponent } from '../dt-delete-button/dt-delete-button.component';
 import { ComponentDataTableEventType } from '../../../core/domain/Datatable/ComponentDataTableEventType.model';
@@ -17,8 +15,6 @@ import { ComponentDataTableEventType } from '../../../core/domain/Datatable/Comp
 })
 export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective | undefined;
-  @ViewChild('editNg') editNg: TemplateRef<DtEditButtonComponent> | undefined;
-  @ViewChild('removeNg') removeNg: TemplateRef<DtDeleteButtonComponent> | undefined;
 
   @Input() tableCols: { title: string, data: string , type : ('img' | 'text'| 'bool' | 'active-inactive') }[] = [];
 
@@ -50,40 +46,45 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   toggleDeleteType: string = 'A';
 
+  @ViewChild('editNg') editNg: TemplateRef<DtEditButtonComponent> | undefined;
+  @ViewChild('removeNg') removeNg: TemplateRef<DtDeleteButtonComponent> | undefined;
+
+  hasData:boolean = false;
+
   constructor(
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-    this.dtOptions = {
-      processing: true,
-      ajax: (dataTablesParameters: any, callback: any) => {
-        if (this.dataObs) {
-          this.dataObsSubscription =  this.dataObs.subscribe({
-              next: resp => {
-                callback({
-                  recordsTotal: resp.length,
-                  data: resp
-                });
-              },
-              error: (error) => {
-                callback({
-                  recordsTotal: 0,
-                  data:[]
-                });
-              }
-          })
-        }
-      },
-      columns: this.colums(),
-      responsive: true,
-      autoWidth: false,
-    };
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
+      this.dtOptions = {
+        processing: true,
+        ajax: (dataTablesParameters: any, callback: any) => {
+          if (this.dataObs) {
+            this.dataObsSubscription =  this.dataObs.subscribe({
+                next: resp => {
+                  callback({
+                    recordsTotal: resp.length,
+                    data: resp
+                  });
+                },
+                error: (error) => {
+                  callback({
+                    recordsTotal: 0,
+                    data:[]
+                  });
+                }
+            })
+          }
+        },
+        columns: this.colums(),
+        responsive: true,
+        autoWidth: false,
+      };
       this.dtTrigger.next(this.dtOptions);
+      this.hasData = true;
     }, 200);
   }
 
@@ -112,12 +113,11 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   colums() {
     const colums: any = [];
-
     colums.push({
       title:'Edit',
       width:'40px',
       name: 'edit',
-      data: 'edit',
+      data: 'id',
       className: 'dt-center editor-edit',
       defaultContent: '',
       ngTemplateRef: {
@@ -176,16 +176,14 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     })
-    
-
+  
     return colums;
   }
 
   reloadTable() {
     if (this.dtElement) {
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.ajax.reload()
-        // console.log('reload');
+        dtInstance.ajax.reload();
       });
     }
   }

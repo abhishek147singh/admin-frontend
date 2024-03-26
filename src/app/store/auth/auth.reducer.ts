@@ -22,9 +22,9 @@ const _authReducer = createReducer(
     on(logout , (state , acion) => {
 
         return {   
-            userName: '',
-            profile: '',
-            tocken: '',
+            name: '',
+            email: '',
+            token: '',
             loading:false,
             error:''
         };

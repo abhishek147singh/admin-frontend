@@ -6,24 +6,21 @@ export interface AuthState extends AuthModel{
     error: string; 
 }
 
-export const initialState : AuthState = getInitialState();
+export const initialState : AuthState = getIntialState();
 
-function getInitialState(){
+function getIntialState(){
+    const secureStorage = new SecureStorageService();
+    const authState = secureStorage.getItem('auth');
 
-    if(typeof window !== 'undefined'){
-        const secureStorageService = new SecureStorageService();
-        const result = secureStorageService.getItem('auth');
-
-        if(result.userName){
-            return result;
+    if(authState){
+        return authState;
+    }else{
+        return {
+            name: '',
+            email: '',
+            token: '',
+            loading:false,
+            error:''
         }
     }
-
-    return {
-        userName: '',
-        profile: '',
-        tocken: '',
-        loading:false,
-        error:''
-    };
 }
