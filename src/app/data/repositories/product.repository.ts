@@ -1,28 +1,28 @@
 import { Injectable } from "@angular/core";
-import { IBrandRepository } from "../../core/repositories/IBrand.repository";
+import { IProductRepository } from "../../core/repositories/IProduct.repository";
 import { baseUrl } from "../../../environment";
 import { HttpClient } from "@angular/common/http";
 import { Observable, map } from "rxjs";
-import { BrandModel } from "../../core/domain/brand/brand.model";
+import { ProductModel } from "../../core/domain/product/product.model";
 import { SimpleResponse } from "../../core/domain/simple-response.model";
-import { BrandListEntity } from "../../entity/brand/brand-list.entity";
-import { BrandEntity } from "../../entity/brand/brand.entity";
+import { ProductEntity } from "../../entity/product/product.entity";
+import { ProductListEntity } from "../../entity/product/product-list.entity";
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class BrandRepository extends IBrandRepository {
+export class ProductRepository extends IProductRepository {
     baseUrl = baseUrl;
     
     constructor(private http:HttpClient){
         super();
     }
 
-    override get(): Observable<BrandModel[]> {
-        const url = `${baseUrl}/api/brand/`;
+    override get(): Observable<ProductModel[]> {
+        const url = `${baseUrl}/api/product/`;
 
-        return this.http.get<BrandListEntity> (url).pipe(
+        return this.http.get<ProductListEntity> (url).pipe(
             map((response) => {
                 if (response.status) {
                     return response.data;
@@ -32,12 +32,11 @@ export class BrandRepository extends IBrandRepository {
             })
         );
     }
+    
+    override getById(id: string): Observable<ProductModel> {
+        const url = `${baseUrl}/api/product/${id}`;
 
-
-    override getById(id: string): Observable<BrandModel> {
-        const url = `${baseUrl}/api/brand/${id}`;
-
-        return this.http.get<BrandEntity> (url).pipe(
+        return this.http.get<ProductEntity> (url).pipe(
             map((response) => {
                 if (response.status) {
                     return response.data;
@@ -49,7 +48,7 @@ export class BrandRepository extends IBrandRepository {
     }
     
     override create(formData: FormData): Observable<SimpleResponse> {
-        const url = `${baseUrl}/api/brand/`;
+        const url = `${baseUrl}/api/product/`;
     
         return this.http.post<SimpleResponse> (url, formData).pipe(
             map((response) => {
@@ -61,9 +60,9 @@ export class BrandRepository extends IBrandRepository {
             })
         );
     }
-
+    
     override update(id: string, formData: FormData): Observable<SimpleResponse> {
-        const url = `${baseUrl}/api/brand/${id}`;
+        const url = `${baseUrl}/api/product/${id}`;
 
         return this.http.put<SimpleResponse> (url, formData).pipe(
             map((response) => {
@@ -77,7 +76,7 @@ export class BrandRepository extends IBrandRepository {
     }
 
     override delete(id: string): Observable<SimpleResponse> {
-        const url = `${baseUrl}/api/brand/${id}`;
+        const url = `${baseUrl}/api/product/${id}`;
 
         return this.http.delete<SimpleResponse> (url).pipe(
             map((response) => {

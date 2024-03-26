@@ -4,7 +4,7 @@ export interface ProductModel{
     category:string;
     noReviews:number;
     rating:number;
-    discreption:string;
+    description:string;
     price:number;
     countInStock:string;
     image:string;
