@@ -16,6 +16,7 @@ const _authReducer = createReducer(
     }),
     
     on(loginError, (state , action) => {
+        console.log("login error reducer");
         return {...state, loading:false, error: action.message};
     }),
 

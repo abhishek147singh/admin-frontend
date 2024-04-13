@@ -36,8 +36,9 @@ export class ManageProductComponent implements OnInit{
     brand: new FormControl('', [Validators.required]),
     category: new FormControl('', [Validators.required]),
     discreption: new FormControl('', [Validators.required]),
-    price: new FormControl('', [Validators.required]),
-    countInStock: new FormControl('', [Validators.required]),
+    price: new FormControl(0, [Validators.required]),
+    countInStock: new FormControl(0, [Validators.required]),
+    discount: new FormControl(0, [Validators.required]),
     image: new FormControl('', [Validators.required]),
     imageSrouce: new FormControl('', [Validators.required]),
   });
@@ -79,6 +80,7 @@ export class ManageProductComponent implements OnInit{
     const discreption = this.productForm.get('discreption')?.value;
     const price = this.productForm.get('price')?.value;
     const countInStock = this.productForm.get('countInStock')?.value;
+    const discount = this.productForm.get('discount')?.value;
     const image = this.productForm.get('image')?.value;
     const imageSrouce = this.productForm.get('imageSrouce')?.value;
 
@@ -90,8 +92,7 @@ export class ManageProductComponent implements OnInit{
     formData.append('description', discreption);
     formData.append('countInStock', countInStock);
     formData.append('image', imageSrouce);
-
-    console.log({discreption});
+    formData.append('discount', discount);
 
     this.productService.create(formData).pipe(take(1)).subscribe({
       next:(response => {
@@ -111,6 +112,7 @@ export class ManageProductComponent implements OnInit{
     const discreption = this.productForm.get('discreption')?.value;
     const price = this.productForm.get('price')?.value;
     const countInStock = this.productForm.get('countInStock')?.value;
+    const discount = this.productForm.get('discount')?.value;
     const image = this.productForm.get('image')?.value;
     const imageSrouce = this.productForm.get('imageSrouce')?.value;
 
@@ -121,6 +123,7 @@ export class ManageProductComponent implements OnInit{
     formData.append('brand', brand);
     formData.append('description', discreption);
     formData.append('countInStock', countInStock);
+    formData.append('discount', discount);
     formData.append('image', imageSrouce);
 
     this.productService.update(this.updateId, formData).pipe(take(1)).subscribe({
@@ -135,7 +138,6 @@ export class ManageProductComponent implements OnInit{
   }
 
   Edit(rowData:any) {
-    console.log('edit', rowData);
     const id = rowData._id;
     this.productService.getById(id).pipe(take(1)).subscribe({
       next:(response => {
@@ -149,6 +151,7 @@ export class ManageProductComponent implements OnInit{
           discreption: response.description,
           price: response.price,
           countInStock: response.countInStock,
+          discount:response.discount,
           image: '',
           imageSrouce:'',
         });
@@ -160,7 +163,6 @@ export class ManageProductComponent implements OnInit{
   }
 
   Delete(rowData:any) {
-    console.log('delete', rowData);
     const id = rowData._id;
 
     this.productService.delete(id).pipe(take(1)).subscribe({
@@ -187,6 +189,7 @@ export class ManageProductComponent implements OnInit{
       countInStock: 0,
       image: '',
       imageSrouce: '',
+      discount:0
     })
   }
 

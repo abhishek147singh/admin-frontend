@@ -30,7 +30,7 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() isDeleteNotNeeded:boolean = false;
 
-  @Input() assetsImgPath:string = '/pdf/head_img/';
+  @Input() assetsImgPath:string = 'http://localhost:5000/';
 
   @Output() Edit: EventEmitter<any> = new EventEmitter<any> ();
 

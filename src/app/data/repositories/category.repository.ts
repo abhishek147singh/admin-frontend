@@ -7,6 +7,9 @@ import { CategoryModel } from "../../core/domain/category/category.model";
 import { SimpleResponse } from "../../core/domain/simple-response.model";
 import { CategoryListEntity } from "../../entity/category/category-list.entity";
 import { CategoryEntity } from "../../entity/category/category.entity";
+import { Store } from "@ngrx/store";
+import { AppState } from "../../store/app.state";
+import { getAuth } from "../../store/auth/auth.selectors";
 
 @Injectable({
     providedIn: 'root'
@@ -15,9 +18,16 @@ import { CategoryEntity } from "../../entity/category/category.entity";
 export class CategoryRepository extends ICategoryRepository {
     
     baseUrl = baseUrl
-    
-    constructor(private http:HttpClient){
+    token = '';
+
+    constructor(private http:HttpClient, private store:Store<AppState>){
         super();
+
+        this.store.select(getAuth).subscribe({
+            next:(authState => {
+                this.token = authState.token; 
+            })
+        })
     }
 
     override get(): Observable<CategoryModel[]> {
@@ -51,7 +61,9 @@ export class CategoryRepository extends ICategoryRepository {
     override create(formData: FormData): Observable<SimpleResponse> {
         const url = `${baseUrl}/api/category/`;
 
-        return this.http.post<SimpleResponse> (url, formData).pipe(
+        return this.http.post<SimpleResponse> (url, formData, {
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response;
@@ -65,7 +77,9 @@ export class CategoryRepository extends ICategoryRepository {
     override update(id: string, formData: FormData): Observable<SimpleResponse> {
         const url = `${baseUrl}/api/category/${id}`;
 
-        return this.http.put<SimpleResponse> (url, formData).pipe(
+        return this.http.put<SimpleResponse> (url, formData,{
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response;
@@ -79,7 +93,9 @@ export class CategoryRepository extends ICategoryRepository {
     override delete(id: string): Observable<SimpleResponse> {
         const url = `${baseUrl}/api/category/${id}`;
 
-        return this.http.delete<SimpleResponse> (url).pipe(
+        return this.http.delete<SimpleResponse> (url, {
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response;

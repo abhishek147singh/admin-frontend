@@ -7,6 +7,9 @@ import { BrandModel } from "../../core/domain/brand/brand.model";
 import { SimpleResponse } from "../../core/domain/simple-response.model";
 import { BrandListEntity } from "../../entity/brand/brand-list.entity";
 import { BrandEntity } from "../../entity/brand/brand.entity";
+import { Store } from "@ngrx/store";
+import { AppState } from "../../store/app.state";
+import { getAuth } from "../../store/auth/auth.selectors";
 
 @Injectable({
     providedIn: 'root'
@@ -14,9 +17,16 @@ import { BrandEntity } from "../../entity/brand/brand.entity";
 
 export class BrandRepository extends IBrandRepository {
     baseUrl = baseUrl;
-    
-    constructor(private http:HttpClient){
+    token = '';
+
+    constructor(private http:HttpClient, private store:Store<AppState>){
         super();
+
+        this.store.select(getAuth).subscribe({
+            next:(authState => {
+                this.token = authState.token; 
+            })
+        })
     }
 
     override get(): Observable<BrandModel[]> {
@@ -51,7 +61,9 @@ export class BrandRepository extends IBrandRepository {
     override create(formData: FormData): Observable<SimpleResponse> {
         const url = `${baseUrl}/api/brand/`;
     
-        return this.http.post<SimpleResponse> (url, formData).pipe(
+        return this.http.post<SimpleResponse> (url, formData, {
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response;
@@ -65,7 +77,9 @@ export class BrandRepository extends IBrandRepository {
     override update(id: string, formData: FormData): Observable<SimpleResponse> {
         const url = `${baseUrl}/api/brand/${id}`;
 
-        return this.http.put<SimpleResponse> (url, formData).pipe(
+        return this.http.put<SimpleResponse> (url, formData, {
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response;
@@ -79,7 +93,9 @@ export class BrandRepository extends IBrandRepository {
     override delete(id: string): Observable<SimpleResponse> {
         const url = `${baseUrl}/api/brand/${id}`;
 
-        return this.http.delete<SimpleResponse> (url).pipe(
+        return this.http.delete<SimpleResponse> (url, {
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response;
