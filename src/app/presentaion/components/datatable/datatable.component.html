@@ -6,6 +6,10 @@
     <app-dt-delete-button [data]="data" (emitter)="emitter($event)"></app-dt-delete-button>
 </ng-template>
 
+<ng-template #addNg let-data="adtData" let-emitter="captureEvents">
+    <app-dt-add-button [data]="data" (emitter)="emitter($event)"></app-dt-add-button>
+</ng-template>
+
 <div class="card" style="padding-top: 1em;">
     <div class="card-body">
         @if (hasData) {

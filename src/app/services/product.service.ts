@@ -19,6 +19,10 @@ export class ProductService extends IProductService{
         return this.productRepository.get();
     }
 
+    override searchProduct(query: string, category: string, brand: string): Observable<ProductModel[]> {
+        return this.productRepository.searchProduct(query, category, brand);
+    }
+
     override getById(id: string): Observable<ProductModel> {
         return this.productRepository.getById(id);
     }

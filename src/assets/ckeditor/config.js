@@ -64,14 +64,4 @@ CKEDITOR.editorConfig = function( config )
 	config.removePlugins = 'exportpdf';
 	config.versionCheck = false;
   config.extraPlugins = 'removespan,contents';
-  
-  CKEDITOR.on('instanceReady', function (ev) {
-  ev.editor.on('paste', function (ev) {
-    setTimeout(function () {
-      ev.editor.execCommand('selectAll');
-      ev.editor.execCommand('ClearSpan', ev.data.dataValue);
-      ev.editor.getSelection().removeAllRanges();
-    }, 0);
-  });
-  });
 };

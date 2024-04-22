@@ -5,6 +5,7 @@ export interface ProductModel{
     noReviews:number;
     rating:number;
     description:string;
+    information:string;
     price:number;
     countInStock:string;
     image:string;

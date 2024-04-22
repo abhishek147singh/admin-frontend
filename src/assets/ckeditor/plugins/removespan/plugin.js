@@ -10,13 +10,6 @@ CKEDITOR.plugins.add( 'removespan', {
 			//icon: CKEDITOR.plugins.getPath('removespan') + 'btn-remove-span.png'
 		});
 		editor.addCommand( 'ClearSpan', CKEDITOR.plugins.removeSpan.commands.removespan );
-		editor.on('paste', function (ev) {
-			setTimeout(function () {
-			  ev.editor.execCommand('selectAll');
-			  ev.editor.execCommand('ClearSpan', ev.data.dataValue);
-			  ev.editor.getSelection().removeAllRanges();
-			}, 0);
-		});
 	}
 } );
 

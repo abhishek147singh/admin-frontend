@@ -5,11 +5,12 @@ import { Observable, Subscription, Subject } from 'rxjs';
 import { DtEditButtonComponent } from '../dt-edit-button/dt-edit-button.component';
 import { DtDeleteButtonComponent } from '../dt-delete-button/dt-delete-button.component';
 import { ComponentDataTableEventType } from '../../../core/domain/Datatable/ComponentDataTableEventType.model';
+import { DtAddButtonComponent } from '../dt-add-button/dt-add-button.component';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [DtDeleteButtonComponent, DtEditButtonComponent, DataTablesModule],
+  imports: [DtDeleteButtonComponent, DtEditButtonComponent, DtAddButtonComponent ,DataTablesModule],
   templateUrl: './datatable.component.html',
   styleUrl: './datatable.component.scss'
 })
@@ -30,11 +31,16 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() isDeleteNotNeeded:boolean = false;
 
+  @Input() isAddButtonNeeded:boolean = false;
+
   @Input() assetsImgPath:string = 'http://localhost:5000/';
 
   @Output() Edit: EventEmitter<any> = new EventEmitter<any> ();
 
   @Output() Remove: EventEmitter<any> = new EventEmitter<any> ();
+
+  @Output() Add: EventEmitter<any> = new EventEmitter<any> ();
+
 
   @Output() ToggleActive: EventEmitter<any> = new EventEmitter<any> ();
 
@@ -48,6 +54,7 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('editNg') editNg: TemplateRef<DtEditButtonComponent> | undefined;
   @ViewChild('removeNg') removeNg: TemplateRef<DtDeleteButtonComponent> | undefined;
+  @ViewChild('addNg') addNg: TemplateRef<DtDeleteButtonComponent> | undefined;
 
   hasData:boolean = false;
 
@@ -113,21 +120,40 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   colums() {
     const colums: any = [];
-    colums.push({
-      title:'Edit',
-      width:'40px',
-      name: 'edit',
-      data: 'id',
-      className: 'dt-center editor-edit',
-      defaultContent: '',
-      ngTemplateRef: {
-        ref: this.editNg,
-        context: {
-          captureEvents: this.onEdit.bind(this)
+    if(!this.isEditNotNeeded){
+      colums.push({
+        title:'Edit',
+        width:'40px',
+        name: 'edit',
+        data: '_id',
+        className: 'dt-center editor-edit',
+        defaultContent: '',
+        ngTemplateRef: {
+          ref: this.editNg,
+          context: {
+            captureEvents: this.onEdit.bind(this)
+          }
         }
-      }
-    })
+      })
+    }
 
+    if(this.isAddButtonNeeded){
+      colums.push({
+        title:'Add',
+        width:'40px',
+        name: 'add',
+        data: '_id',
+        className: 'dt-center editor-edit',
+        defaultContent: '',
+        ngTemplateRef: {
+          ref: this.addNg,
+          context: {
+            captureEvents: this.onAdd.bind(this)
+          }
+        }
+      })
+    }
+  
     this.tableCols.forEach(col => {
       if(col.type === 'text'){
         colums.push({ title: col.title, data: col.data });
@@ -153,7 +179,7 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
           data: null,
           className: 'dt-center editor-edit',
           render: function (data: any, type: any, row: any) {
-            const url = data[col.data].startsWith('http') ? data[col.data] :  assetsImgPath + data[col.data];
+            const url = assetsImgPath + data[col.data];
 
             return '<img style="width:150px;height:100%;" src="' + url +'" class="img-data" >';
           },
@@ -162,21 +188,23 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    colums.push({
-      title:'Delete',
-      name: 'Delete',
-      width:'40px',
-      data: 'flag',
-      className: 'dt-center editor-edit',
-      defaultContent: '',
-      ngTemplateRef: {
-        ref: this.removeNg,
-        context: {
-          captureEvents: this.onDelete.bind(this),
+    if(!this.isDeleteNotNeeded){
+      colums.push({
+        title:'Delete',
+        name: 'Delete',
+        width:'40px',
+        data: '_id',
+        className: 'dt-center editor-edit',
+        defaultContent: '',
+        ngTemplateRef: {
+          ref: this.removeNg,
+          context: {
+            captureEvents: this.onDelete.bind(this),
+          }
         }
-      }
-    })
-  
+      })
+    }
+    
     return colums;
   }
 
@@ -194,6 +222,10 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onDelete(event: ComponentDataTableEventType) {
     this.Remove.emit(event.data);
+  }
+
+  onAdd(event: ComponentDataTableEventType) {
+    this.Add.emit(event.data);
   }
 
   onToggleActive(event: ComponentDataTableEventType){

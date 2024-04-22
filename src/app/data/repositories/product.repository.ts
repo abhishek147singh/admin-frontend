@@ -10,6 +10,7 @@ import { ProductListEntity } from "../../entity/product/product-list.entity";
 import { Store } from "@ngrx/store";
 import { AppState } from "../../store/app.state";
 import { getAuth } from "../../store/auth/auth.selectors";
+import { ResponseModel } from "../../core/domain/response.model";
 
 @Injectable({
     providedIn: 'root'
@@ -36,6 +37,20 @@ export class ProductRepository extends IProductRepository {
             map((response) => {
                 if (response.status) {
                     return response.data;
+                }
+
+                throw new Error(response.msg);
+            })
+        );
+    }
+
+    override searchProduct(query: string, category: string, brand: string): Observable<ProductModel[]> {
+        const url = `${baseUrl}/api/product/search?query=${query}&category=${category}&brand=${brand}`;
+
+        return this.http.get<ResponseModel<{ products: ProductModel[]; }>>(url).pipe(
+            map(response => {
+                if (response.status) {
+                    return response.data.products;
                 }
 
                 throw new Error(response.msg);
@@ -104,4 +119,6 @@ export class ProductRepository extends IProductRepository {
             })
         );
     }
+
+
 }

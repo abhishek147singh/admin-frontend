@@ -36,6 +36,7 @@ export class ManageProductComponent implements OnInit{
     brand: new FormControl('', [Validators.required]),
     category: new FormControl('', [Validators.required]),
     discreption: new FormControl('', [Validators.required]),
+    information: new FormControl('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
     countInStock: new FormControl(0, [Validators.required]),
     discount: new FormControl(0, [Validators.required]),
@@ -83,6 +84,7 @@ export class ManageProductComponent implements OnInit{
     const discount = this.productForm.get('discount')?.value;
     const image = this.productForm.get('image')?.value;
     const imageSrouce = this.productForm.get('imageSrouce')?.value;
+    const information = this.productForm.get('information')?.value;
 
     const formData = new FormData();
     formData.append('name', name);
@@ -93,6 +95,8 @@ export class ManageProductComponent implements OnInit{
     formData.append('countInStock', countInStock);
     formData.append('image', imageSrouce);
     formData.append('discount', discount);
+    formData.append('information', information);
+    
 
     this.productService.create(formData).pipe(take(1)).subscribe({
       next:(response => {
@@ -115,6 +119,7 @@ export class ManageProductComponent implements OnInit{
     const discount = this.productForm.get('discount')?.value;
     const image = this.productForm.get('image')?.value;
     const imageSrouce = this.productForm.get('imageSrouce')?.value;
+    const information = this.productForm.get('information')?.value;
 
     const formData = new FormData();
     formData.append('name', name);
@@ -125,6 +130,7 @@ export class ManageProductComponent implements OnInit{
     formData.append('countInStock', countInStock);
     formData.append('discount', discount);
     formData.append('image', imageSrouce);
+    formData.append('information', information);
 
     this.productService.update(this.updateId, formData).pipe(take(1)).subscribe({
       next:(response => {
@@ -152,6 +158,7 @@ export class ManageProductComponent implements OnInit{
           price: response.price,
           countInStock: response.countInStock,
           discount:response.discount,
+          information:response.information, 
           image: '',
           imageSrouce:'',
         });
@@ -189,7 +196,8 @@ export class ManageProductComponent implements OnInit{
       countInStock: 0,
       image: '',
       imageSrouce: '',
-      discount:0
+      discount:0,
+      information:''
     })
   }
 

@@ -32,7 +32,9 @@ export class BrandRepository extends IBrandRepository {
     override get(): Observable<BrandModel[]> {
         const url = `${baseUrl}/api/brand/`;
 
-        return this.http.get<BrandListEntity> (url).pipe(
+        return this.http.get<BrandListEntity> (url,{
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response.data;
@@ -47,7 +49,9 @@ export class BrandRepository extends IBrandRepository {
     override getById(id: string): Observable<BrandModel> {
         const url = `${baseUrl}/api/brand/${id}`;
 
-        return this.http.get<BrandEntity> (url).pipe(
+        return this.http.get<BrandEntity> (url,{
+            headers:{'authorization': this.token}
+        }).pipe(
             map((response) => {
                 if (response.status) {
                     return response.data;
