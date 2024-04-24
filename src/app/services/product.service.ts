@@ -4,6 +4,7 @@ import { SimpleResponse } from "../core/domain/simple-response.model";
 import { IProductService } from "../core/services/IProduct.service";
 import { ProductRepository } from "../data/repositories/product.repository";
 import { ProductModel } from "../core/domain/product/product.model";
+import { SearchedProductModel } from "../core/domain/freatured-products/searched-product.model";
 
 @Injectable({
     providedIn:'root'
@@ -19,7 +20,7 @@ export class ProductService extends IProductService{
         return this.productRepository.get();
     }
 
-    override searchProduct(query: string, category: string, brand: string): Observable<ProductModel[]> {
+    override searchProduct(query: string, category: string, brand: string): Observable<SearchedProductModel[]> {
         return this.productRepository.searchProduct(query, category, brand);
     }
 

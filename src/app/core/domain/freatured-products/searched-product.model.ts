@@ -1,4 +1,4 @@
-export interface FreaturedProductModel{
+export interface SearchedProductModel{
     _id: string; 
     name: string;
     img: string;

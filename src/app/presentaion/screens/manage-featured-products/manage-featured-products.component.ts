@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CKEditorModule } from 'ng2-ckeditor';
-import { Observable, of, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { TableColType } from '../../../core/domain/Datatable/TableColType.model';
 import { BrandModel } from '../../../core/domain/brand/brand.model';
 import { CategoryModel } from '../../../core/domain/category/category.model';
@@ -11,8 +11,8 @@ import { CategoryService } from '../../../services/category.service';
 import { ProductService } from '../../../services/product.service';
 import { ToasterService } from '../../../services/toaster.service';
 import { DatatableComponent } from '../../components/datatable/datatable.component';
-import { ProductModel } from '../../../core/domain/product/product.model';
 import { FeaturedProductService } from '../../../services/featured-product.service';
+import { SearchedProductModel } from '../../../core/domain/freatured-products/searched-product.model';
 
 @Component({
   selector: 'app-manage-featured-products',
@@ -33,7 +33,7 @@ export class ManageFeaturedProductsComponent implements OnInit{
   categoryList$:Observable<CategoryModel[]> | undefined;
   brandList$:Observable<BrandModel[]> | undefined;
 
-  searchedProductList$:Observable<ProductModel[]> | undefined;
+  searchedProductList$:Observable<SearchedProductModel[]> | undefined;
 
   productForm:FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -68,7 +68,7 @@ export class ManageFeaturedProductsComponent implements OnInit{
       { title: 'Category', data: 'category' , type: 'text'},
       { title: 'Price', data: 'price' , type: 'text'},
       { title: 'Number', data: 'countInStock' , type: 'text'},
-      { title: 'Image', data: 'image' , type: 'img'}
+      { title: 'Image', data: 'img' , type: 'img'}
     ];
 
     this.searchProductsTableCols = [
@@ -99,6 +99,12 @@ export class ManageFeaturedProductsComponent implements OnInit{
     this.featuredProductService.addToList(id).pipe(take(1)).subscribe({
       next:(response => {
         this.toasterService.success('Product added to featured Products list.');
+        if(this.sptable){
+          this.sptable.reloadTable();
+        }
+        if(this.dttable){
+          this.dttable.reloadTable();
+        }
       }),
       error:(error => {
         this.toasterService.error('Product is not added to featured Products list.');

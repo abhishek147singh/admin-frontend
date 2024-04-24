@@ -6,8 +6,12 @@ main{
 }
 
 .logout-btn{
+    margin-top: 10px;
     background-color: transparent;
-    background-color: #fff;
-    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
     margin-left: auto;
+    border: none;
+    outline: none;
 }
