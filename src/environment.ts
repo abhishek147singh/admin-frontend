@@ -1,2 +1,2 @@
-export const baseUrl = '/proxy';
-export const assetsPaths = 'http://localhost:5000/'
+export const baseUrl = 'http://localhost:3000';
+export const assetsPaths = 'http://localhost:3000/';

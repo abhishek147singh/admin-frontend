@@ -26,7 +26,7 @@ COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy built Angular app from previous stage
-COPY --from=builder /app/dist/admin-frontend/browser /usr/share/nginx/html
+COPY --from=builder /app/dist/admin-frontend/browser /usr/share/nginx/html/
 
 # Expose port
 EXPOSE 80
