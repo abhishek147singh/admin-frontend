@@ -8,6 +8,6 @@ export interface ProductModel{
     information:string;
     price:number;
     countInStock:string;
-    image:string;
+    img:string;
     discount:number;
 }

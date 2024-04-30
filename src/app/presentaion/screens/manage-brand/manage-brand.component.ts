@@ -22,6 +22,8 @@ export class ManageBrandComponent implements OnInit {
   dataObs:Observable<any> | undefined;
   tableCols: TableColType[] = [];
 
+  loading:boolean = false;
+
   brandForm:FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
@@ -47,6 +49,7 @@ export class ManageBrandComponent implements OnInit {
   }
 
   create(){
+    if(this.loading) return;
     const name = this.brandForm.get('name')?.value;
     const description = this.brandForm.get('description')?.value;
     const image = this.brandForm.get('image')?.value;
@@ -57,12 +60,15 @@ export class ManageBrandComponent implements OnInit {
     formData.append('description', description);
     formData.append('image', imageSource);
 
+    this.loading = true;
     this.brandService.create(formData).pipe(take(1)).subscribe({
       next:data => {
+        this.loading = false;
         this.toasterSerice.success('Create successfully!!');
         this.dttable?.reloadTable();
       },
       error:error => {
+        this.loading = false;
         this.toasterSerice.error(error.message);
       }
     })
@@ -70,6 +76,7 @@ export class ManageBrandComponent implements OnInit {
   }
 
   update(){
+    if(this.loading) return;
     const name = this.brandForm.get('name')?.value;
     const description = this.brandForm.get('description')?.value;
     const image = this.brandForm.get('image')?.value;
@@ -80,12 +87,15 @@ export class ManageBrandComponent implements OnInit {
     formData.append('description', description);
     formData.append('image', imageSource || this.previewImage);
 
+    this.loading = true;
     this.brandService.update(this.updateID, formData).pipe(take(1)).subscribe({
       next:(response => {
+        this.loading = false;
         this.toasterSerice.success('Updated successfully!');
         this.dttable?.reloadTable();
       }),
       error:(error => {
+        this.loading = false;
         this.toasterSerice.error('Unable to update proudct. Error: '+ error.message);
       })
     })

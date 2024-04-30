@@ -31,6 +31,8 @@ export class ManageProductComponent implements OnInit{
   categoryList$:Observable<CategoryModel[]> | undefined;
   brandList$:Observable<BrandModel[]> | undefined;
 
+  loading:boolean = false;
+
   productForm:FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     brand: new FormControl('', [Validators.required]),
@@ -75,6 +77,8 @@ export class ManageProductComponent implements OnInit{
 
 
   createProduct(){
+    if(this.loading) return;
+
     const name = this.productForm.get('name')?.value;
     const brand = this.productForm.get('brand')?.value;
     const category = this.productForm.get('category')?.value;
@@ -97,13 +101,15 @@ export class ManageProductComponent implements OnInit{
     formData.append('discount', discount);
     formData.append('information', information);
     
-
+    this.loading = true;
     this.productService.create(formData).pipe(take(1)).subscribe({
       next:(response => {
+        this.loading = false;
         this.toasterService.success(response.msg);
         this.dttable?.reloadTable();
       }),
       error:(error => {
+        this.loading = false;
         this.toasterService.error(error.message);
       })
     })
@@ -132,12 +138,15 @@ export class ManageProductComponent implements OnInit{
     formData.append('image', imageSrouce);
     formData.append('information', information);
 
+    this.loading = true;
     this.productService.update(this.updateId, formData).pipe(take(1)).subscribe({
       next:(response => {
+        this.loading = false;
         this.toasterService.success(response.msg);
         this.dttable?.reloadTable();
       }),
       error:(error => {
+        this.loading = false;
         this.toasterService.error(error.message);
       })
     })
@@ -149,7 +158,7 @@ export class ManageProductComponent implements OnInit{
       next:(response => {
         this.updateId = id;
         this.isUpdateMode = true;
-        this.previewImage = response.image;
+        this.previewImage = response.img;
         this.productForm.patchValue({
           name: response.name,
           brand: response.brand,

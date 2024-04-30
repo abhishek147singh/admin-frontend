@@ -172,14 +172,13 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
         })
       }
       else{
-        const assetsImgPath = this.assetsImgPath;
         colums.push({
           title: col.title,
           name: col.title,
           data: null,
           className: 'dt-center editor-edit',
           render: function (data: any, type: any, row: any) {
-            const url = assetsImgPath + data[col.data];
+            const url = data[col.data];
 
             return '<img style="width:150px;height:100%;" src="' + url +'" class="img-data" >';
           },
