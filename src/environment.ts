@@ -1,4 +1,4 @@
 import { isDevMode } from "@angular/core";
 
-export const baseUrl = isDevMode() ? '/proxy' : 'http://localhost:3000';
+export const baseUrl = isDevMode() ? '/proxy' : '';
 export const assetsPaths = 'http://localhost:3000/';
