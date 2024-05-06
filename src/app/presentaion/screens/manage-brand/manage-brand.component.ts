@@ -6,6 +6,7 @@ import { Observable, take } from 'rxjs';
 import { TableColType } from '../../../core/domain/Datatable/TableColType.model';
 import { BrandService } from '../../../services/brand.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { TableColEnum } from '../../../core/enumes/TableColDataType.enums';
 
 @Component({
   selector: 'app-manage-brand',
@@ -39,8 +40,8 @@ export class ManageBrandComponent implements OnInit {
     this.dataObs = this.brandService.get();
 
     this.tableCols = [
-      { title: 'Name', data: 'name' , type: 'text'},
-      { title: 'Image', data: 'image' , type: 'img'}
+      { title: 'Name', data: 'name' , type: TableColEnum.text},
+      { title: 'Image', data: 'image' , type: TableColEnum.img}
     ];
   }
 

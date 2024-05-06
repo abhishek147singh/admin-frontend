@@ -1,5 +1,7 @@
+import { TableColEnum } from "../../enumes/TableColDataType.enums";
+
 export interface TableColType{
     title: string; 
     data: string ;
-    type: 'img' | 'text' | 'bool' | 'active-inactive';
+    type: TableColEnum;
 }

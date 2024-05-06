@@ -1,0 +1,22 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active">Manage Orders</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+      
+    <section class="content" style="padding-bottom: 15px;">
+        <div class="container-fluid">
+            <app-datatable (onMarkAsDelivered)="onMarkAsDelivered($event)" [dataObs]="dataObs" [tableCols]="tableCols" [isDeleteNotNeeded]="true" [isEditNotNeeded]="true" #dttable></app-datatable>
+        </div>
+    </section>
+  </div>

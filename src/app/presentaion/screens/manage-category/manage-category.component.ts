@@ -6,6 +6,7 @@ import { ToasterService } from '../../../services/toaster.service';
 import { DatatableComponent } from '../../components/datatable/datatable.component';
 import { CategoryService } from '../../../services/category.service';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { TableColEnum } from '../../../core/enumes/TableColDataType.enums';
 
 @Component({
   selector: 'app-manage-category',
@@ -39,8 +40,8 @@ export class ManageCategoryComponent  implements OnInit {
     this.dataObs = this.categoryService.get();
 
     this.tableCols = [
-      { title: 'Name', data: 'name' , type: 'text'},
-      { title: 'Image', data: 'image' , type: 'img'}
+      { title: 'Name', data: 'name' , type: TableColEnum.text},
+      { title: 'Image', data: 'image' , type: TableColEnum.img}
     ];
   }
 

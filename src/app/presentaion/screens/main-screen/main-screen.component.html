@@ -95,6 +95,16 @@
                 </p>
               </a>
             </li>
+
+            <!-- manage-orders -->
+            <li class="nav-item">
+              <a routerLink="manage-orders" class="nav-link" [ngClass]="{'active':activeUrl === 'manage-orders'}">
+                <i class="fa-regular fa-circle"></i>&nbsp;
+                <p>
+                  Manage Orders
+                </p>
+              </a>
+            </li>
           </ul>
           <button class="logout-btn" title="logout" (click)="logout()">Log out</button>
         </nav>

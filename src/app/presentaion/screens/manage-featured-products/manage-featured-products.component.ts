@@ -13,6 +13,7 @@ import { ToasterService } from '../../../services/toaster.service';
 import { DatatableComponent } from '../../components/datatable/datatable.component';
 import { FeaturedProductService } from '../../../services/featured-product.service';
 import { SearchedProductModel } from '../../../core/domain/freatured-products/searched-product.model';
+import { TableColEnum } from '../../../core/enumes/TableColDataType.enums';
 
 @Component({
   selector: 'app-manage-featured-products',
@@ -63,19 +64,19 @@ export class ManageFeaturedProductsComponent implements OnInit{
     this.brandList$ = this.brandService.get();
 
     this.tableCols = [
-      { title: 'Name', data: 'name' , type: 'text'},
-      { title: 'Brand', data: 'brand' , type: 'text'},
-      { title: 'Category', data: 'category' , type: 'text'},
-      { title: 'Price', data: 'price' , type: 'text'},
-      { title: 'Number', data: 'countInStock' , type: 'text'},
-      { title: 'Image', data: 'img' , type: 'img'}
+      { title: 'Name', data: 'name' , type: TableColEnum.text},
+      { title: 'Brand', data: 'brand' , type: TableColEnum.text},
+      { title: 'Category', data: 'category' , type: TableColEnum.text},
+      { title: 'Price', data: 'price' , type: TableColEnum.text},
+      { title: 'Number', data: 'countInStock' , type: TableColEnum.text},
+      { title: 'Image', data: 'img' , type: TableColEnum.img}
     ];
 
     this.searchProductsTableCols = [
-      { title: 'Name', data: 'name' , type: 'text'},
-      { title: 'Brand', data: 'brand' , type: 'text'},
-      { title: 'Category', data: 'category' , type: 'text'},
-      { title: 'Image', data: 'img' , type: 'img'}
+      { title: 'Name', data: 'name' , type: TableColEnum.text},
+      { title: 'Brand', data: 'brand' , type: TableColEnum.text},
+      { title: 'Category', data: 'category' , type: TableColEnum.text},
+      { title: 'Image', data: 'img' , type: TableColEnum.img}
     ];
   }
 

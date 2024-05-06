@@ -6,18 +6,21 @@ import { DtEditButtonComponent } from '../dt-edit-button/dt-edit-button.componen
 import { DtDeleteButtonComponent } from '../dt-delete-button/dt-delete-button.component';
 import { ComponentDataTableEventType } from '../../../core/domain/Datatable/ComponentDataTableEventType.model';
 import { DtAddButtonComponent } from '../dt-add-button/dt-add-button.component';
+import { TableColType } from '../../../core/domain/Datatable/TableColType.model';
+import { TableColEnum } from '../../../core/enumes/TableColDataType.enums';
+import { MarkAsDeliveredBtnComponent } from '../mark-as-delivered-btn/mark-as-delivered-btn.component';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [DtDeleteButtonComponent, DtEditButtonComponent, DtAddButtonComponent ,DataTablesModule],
+  imports: [DtDeleteButtonComponent, DtEditButtonComponent, DtAddButtonComponent ,DataTablesModule, MarkAsDeliveredBtnComponent],
   templateUrl: './datatable.component.html',
   styleUrl: './datatable.component.scss'
 })
 export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective | undefined;
 
-  @Input() tableCols: { title: string, data: string , type : ('img' | 'text'| 'bool' | 'active-inactive') }[] = [];
+  @Input() tableCols: TableColType[] = [];
 
   @Input() dataObs: Observable<any> | undefined;
 
@@ -41,8 +44,9 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Output() Add: EventEmitter<any> = new EventEmitter<any> ();
 
-
   @Output() ToggleActive: EventEmitter<any> = new EventEmitter<any> ();
+
+  @Output() onMarkAsDelivered: EventEmitter<any> = new EventEmitter<any> ();
 
   permissionSubscription: Subscription | undefined;
   dataObsSubscription: Subscription | undefined;
@@ -55,6 +59,7 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('editNg') editNg: TemplateRef<DtEditButtonComponent> | undefined;
   @ViewChild('removeNg') removeNg: TemplateRef<DtDeleteButtonComponent> | undefined;
   @ViewChild('addNg') addNg: TemplateRef<DtDeleteButtonComponent> | undefined;
+  @ViewChild('markAsDelivered') markAsDelivered: TemplateRef<DtDeleteButtonComponent> | undefined;
 
   hasData:boolean = false;
 
@@ -155,11 +160,11 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   
     this.tableCols.forEach(col => {
-      if(col.type === 'text'){
+      if(col.type === TableColEnum.text){
         colums.push({ title: col.title, data: col.data });
       }
       
-      else if(col.type === 'bool'){
+      else if(col.type === TableColEnum.bool){
         colums.push({
           title: col.title,
           name: col.title,
@@ -169,6 +174,46 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
             return data[col.data] ? '<span style="color:green;">Active</span>' : '<span style="color:red;">Blocked</span>';
           },
           orderable: false
+        })
+      }
+      else if(col.type === TableColEnum.date){
+        colums.push({
+          title: col.title,
+          name: col.title,
+          data: null,
+          className: 'dt-center editor-edit',
+          render: function (data: any, type: any, row: any) {
+            const dateString = data[col.data];
+            if(dateString){
+              const date = new Date(dateString);
+
+              const day = date.getDate();
+              const month = date.getMonth() + 1; // Months are zero-based, so add 1
+              const year = date.getFullYear();
+
+              const formattedDate = `${day}/${month}/${year}`;
+
+              return formattedDate;
+            }else{
+              return 'null'
+            }
+          },
+          orderable: false
+        })
+      }else if(col.type === TableColEnum.isDeliveredBtn){
+        colums.push({
+          title:'Actions',
+          name: 'action',
+          width:'100px',
+          data: '_id',
+          className: 'dt-center editor-edit',
+          defaultContent: '',
+          ngTemplateRef: {
+            ref: this.markAsDelivered,
+            context: {
+              captureEvents: this.onDelivered.bind(this),
+            }
+          }
         })
       }
       else{
@@ -229,5 +274,9 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onToggleActive(event: ComponentDataTableEventType){
     this.ToggleActive.emit(event.data);
+  }
+
+  onDelivered(event: ComponentDataTableEventType){
+    this.onMarkAsDelivered.emit(event.data);
   }
 }

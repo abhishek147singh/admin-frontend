@@ -11,6 +11,7 @@ import { CategoryModel } from '../../../core/domain/category/category.model';
 import { BrandModel } from '../../../core/domain/brand/brand.model';
 import { AsyncPipe } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
+import { TableColEnum } from '../../../core/enumes/TableColDataType.enums';
 
 @Component({
   selector: 'app-manage-product',
@@ -62,12 +63,12 @@ export class ManageProductComponent implements OnInit{
     this.brandList$ = this.brandService.get();
 
     this.tableCols = [
-      { title: 'Name', data: 'name' , type: 'text'},
-      { title: 'Brand', data: 'brand' , type: 'text'},
-      { title: 'Category', data: 'category' , type: 'text'},
-      { title: 'Price', data: 'price' , type: 'text'},
-      { title: 'Number', data: 'countInStock' , type: 'text'},
-      { title: 'Image', data: 'img' , type: 'img'}
+      { title: 'Name', data: 'name' , type: TableColEnum.text},
+      { title: 'Brand', data: 'brand' , type: TableColEnum.text},
+      { title: 'Category', data: 'category' , type: TableColEnum.text},
+      { title: 'Price', data: 'price' , type: TableColEnum.text},
+      { title: 'Number', data: 'countInStock' , type: TableColEnum.text},
+      { title: 'Image', data: 'img' , type: TableColEnum.img}
     ];
   }
 

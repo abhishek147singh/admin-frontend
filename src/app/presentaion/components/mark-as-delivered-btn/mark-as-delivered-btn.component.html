@@ -1,0 +1,7 @@
+<div class="btn-group d-block text-center">
+    @if (data['isDelivered']) {
+        <span style="color: green;">Delivered</span> 
+    }@else {
+        <button style="color: red;" class="btn btn-sm btn-default" (click)="martAsDelivered()">Deliver</button>
+    }
+</div>

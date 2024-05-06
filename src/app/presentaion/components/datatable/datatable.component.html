@@ -10,6 +10,10 @@
     <app-dt-add-button [data]="data" (emitter)="emitter($event)"></app-dt-add-button>
 </ng-template>
 
+<ng-template #markAsDelivered let-data="adtData" let-emitter="captureEvents">
+    <app-mark-as-delivered-btn [data]="data" (emitter)="emitter($event)"></app-mark-as-delivered-btn>
+</ng-template>
+
 <div class="card" style="padding-top: 1em;">
     <div class="card-body">
         @if (hasData) {
