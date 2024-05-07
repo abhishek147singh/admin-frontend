@@ -5,11 +5,12 @@ import { TableColType } from '../../../core/domain/Datatable/TableColType.model'
 import { ToasterService } from '../../../services/toaster.service';
 import { OrderService } from '../../../services/order.service';
 import { TableColEnum } from '../../../core/enumes/TableColDataType.enums';
+import { ViewOrderDetailsPopupComponent } from './components/view-order-details-popup/view-order-details-popup.component';
 
 @Component({
   selector: 'app-manage-orders',
   standalone: true,
-  imports: [DatatableComponent],
+  imports: [DatatableComponent, ViewOrderDetailsPopupComponent],
   templateUrl: './manage-orders.component.html',
   styleUrl: './manage-orders.component.scss'
 })
@@ -18,6 +19,7 @@ export class ManageOrdersComponent implements OnInit {
   tableCols: TableColType[] = [];
 
   @ViewChild('dttable') dttable:DatatableComponent|undefined;
+  @ViewChild('orderDetailsPopup') orderDetailsPopup:ViewOrderDetailsPopupComponent|undefined;
 
   constructor(private toasterSerice:ToasterService, private orderService:OrderService){}
 
@@ -25,6 +27,7 @@ export class ManageOrdersComponent implements OnInit {
     this.dataObs = this.orderService.getOrderList();
 
     this.tableCols = [
+      { title: 'Show', data: '_id' , type: TableColEnum.show},
       { title: 'Order Id', data: '_id' , type: TableColEnum.text},
       { title: 'Total Price', data: 'totalPrice' , type: TableColEnum.text},
       { title: 'IsPaid', data: 'isPaid' , type: TableColEnum.text},
@@ -47,6 +50,28 @@ export class ManageOrdersComponent implements OnInit {
         }),
         error:(error => {
           this.toasterSerice.error('Unable to update order');
+        })
+      })
+    }
+  }
+
+  showOrderDetails(){
+    if(this.orderDetailsPopup){
+      // this.orderDetailsPopup.open();
+    }
+  }
+
+  onShow(rowData:any){
+    const order_id = rowData._id;
+    if(order_id){
+      this.orderService.getOrderDetails(order_id).pipe(take(1)).subscribe({
+        next:(response => {
+          if(this.orderDetailsPopup){
+            this.orderDetailsPopup.open(response);
+          }
+        }),
+        error:(error => {
+          this.toasterSerice.error('Unable to fetch Order Details.');
         })
       })
     }

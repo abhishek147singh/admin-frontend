@@ -14,10 +14,9 @@
       <!-- /.container-fluid -->
     </section>
     
-    <app-view-order-details-popup #orderDetailsPopup></app-view-order-details-popup>
     <section class="content" style="padding-bottom: 15px;">
         <div class="container-fluid">
-            <app-datatable (onMarkAsDelivered)="onMarkAsDelivered($event)" (Show)="onShow($event)" [dataObs]="dataObs" [tableCols]="tableCols" [isDeleteNotNeeded]="true" [isEditNotNeeded]="true" #dttable></app-datatable>
+            <app-datatable [dataObs]="dataObs" [tableCols]="tableCols" [isDeleteNotNeeded]="true" [isEditNotNeeded]="true" #dttable></app-datatable>
         </div>
     </section>
   </div>

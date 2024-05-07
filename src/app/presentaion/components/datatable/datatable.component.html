@@ -14,6 +14,10 @@
     <app-mark-as-delivered-btn [data]="data" (emitter)="emitter($event)"></app-mark-as-delivered-btn>
 </ng-template>
 
+<ng-template #showNg let-data="adtData" let-emitter="captureEvents">
+    <app-dt-show-btn [data]="data" (emitter)="emitter($event)"></app-dt-show-btn>
+</ng-template>
+
 <div class="card" style="padding-top: 1em;">
     <div class="card-body">
         @if (hasData) {

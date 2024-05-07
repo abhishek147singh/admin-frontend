@@ -1,0 +1,199 @@
+<div class="modal fade show" id="modal-xl" style="padding-right: 17px;background-color: rgba(0, 0, 0, 0.4);" [ngStyle]="{'display': isActive ? 'block':'none'}" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Order Details</h4>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--  -->
+                @if(OrderData){
+
+                    <div class="card">
+                        <div class="row">
+                            <div class="title">Products</div>
+                        </div>
+            
+                        <!-- Product list -->
+                        @for (product of OrderData.orderItems; track $index) {
+                            <div class="row product">
+                                <div class="product">
+                                    <div class="image-box">
+                                        <img [src]="product.img" alt="Product Image">
+                                    </div>
+                                    <div class="text-details">
+                                        <div class="other-details">
+                                            <a>{{product.name}}  - {{product.product}}</a>
+                                        </div>
+                                        <div class="price">
+                                            ₹{{product.price}} x {{product.quantity}} &nbsp; = &nbsp; ₹{{getProductPrice(product.price , product.quantity)}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+        
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="row">
+                            <div class="title">Payment</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <strong>Shipping Charge:</strong>  {{OrderData.shippingPrice}}
+                             </div>
+                             
+                            <div class="col">
+                                <strong>Tax Price:</strong>  {{OrderData.taxPrice}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <strong>Total Price:</strong>  {{OrderData.totalPrice}}
+                             </div>
+                            <div class="col">
+                               <strong>Method:</strong>  {{OrderData.paymentMethod}}
+                            </div>
+                        </div>
+                        @if (OrderData.isPaid) {
+                            <div class="success" style="margin-top: 20px;">
+                                <div class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path d="M 41.9375 8.625 C 41.273438 8.648438 40.664063 9 40.3125 9.5625 L 21.5 38.34375 L 9.3125 27.8125 C 8.789063 27.269531 8.003906 27.066406 7.28125 27.292969 C 6.5625 27.515625 6.027344 28.125 5.902344 28.867188 C 5.777344 29.613281 6.078125 30.363281 6.6875 30.8125 L 20.625 42.875 C 21.0625 43.246094 21.640625 43.410156 22.207031 43.328125 C 22.777344 43.242188 23.28125 42.917969 23.59375 42.4375 L 43.6875 11.75 C 44.117188 11.121094 44.152344 10.308594 43.78125 9.644531 C 43.410156 8.984375 42.695313 8.589844 41.9375 8.625 Z"/></svg>
+                                </div>
+                                <div class="text">
+                                    Paid At {{OrderData.paidAt | date}}
+                                </div>
+                            </div>
+                        }@else {
+                            <div class="alert" style="margin-top: 20px;">
+                                <div class="icon">
+                                    <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ErrorOutlineIcon"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg>
+                                </div>
+                                <div class="text">
+                                    Not Paid
+                                </div>
+                            </div>
+                        }
+                    </div>
+        
+        
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="row">
+                            <div class="title">Shipping Details</div>
+                        </div>
+                        <div>
+                            <!-- shipping address details -->
+                            <div class="shipping-form-container">
+                                <!-- <h1>Shipping Address</h1> -->
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="fName">Full Name: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.fullName}}
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="email">Email: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.email}}
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="mobile">Mobile Number: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.mobile}}
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="address1">Address Line: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.address}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="city">City: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.city}}
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="state">State: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.state}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="country">Country: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.country}}
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="label-box">
+                                                <label for="zip">ZIP Code: </label>
+                                            </div>
+                                            <div class="input-box">
+                                                {{OrderData.shippingAddress.zipcode}}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <!-- shipping address details end -->
+                        </div>
+                        
+                        @if (OrderData.isDelivered) {
+                            <div class="success" style="margin-top: 20px;">
+                                <div class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path d="M 41.9375 8.625 C 41.273438 8.648438 40.664063 9 40.3125 9.5625 L 21.5 38.34375 L 9.3125 27.8125 C 8.789063 27.269531 8.003906 27.066406 7.28125 27.292969 C 6.5625 27.515625 6.027344 28.125 5.902344 28.867188 C 5.777344 29.613281 6.078125 30.363281 6.6875 30.8125 L 20.625 42.875 C 21.0625 43.246094 21.640625 43.410156 22.207031 43.328125 C 22.777344 43.242188 23.28125 42.917969 23.59375 42.4375 L 43.6875 11.75 C 44.117188 11.121094 44.152344 10.308594 43.78125 9.644531 C 43.410156 8.984375 42.695313 8.589844 41.9375 8.625 Z"/></svg>
+                                </div>
+                                <div class="text">
+                                    Delivered At {{OrderData.deliveredAt | date}}
+                                </div>
+                            </div>
+                        }@else {
+                            <div class="alert" style="margin-top: 20px;">
+                                <div class="icon">
+                                    <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ErrorOutlineIcon"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg>
+                                </div>
+                                <div class="text">
+                                    Not Delivered
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                }
+                <!--  -->
+            </div>
+        </div>
+    </div>
+</div>

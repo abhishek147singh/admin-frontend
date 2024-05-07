@@ -9,6 +9,8 @@ import { Store } from "@ngrx/store";
 import { AppState } from "../../store/app.state";
 import { getAuth } from "../../store/auth/auth.selectors";
 import { SimpleResponse } from "../../core/domain/simple-response.model";
+import { OrderModel } from "../../core/domain/orders/order.model";
+import { OrderEntity } from "../../entity/order/order.entity";
 
 @Injectable({
     providedIn: 'root'
@@ -54,6 +56,22 @@ export class OrderRepository extends IOrderRepository {
              map((response) => {
                  if (response.status) {
                      return response;
+                 }
+ 
+                 throw new Error(response.msg);
+             })
+        );
+    }
+
+    override getOrderDetails(order_id: string): Observable<OrderModel> {
+        const url = `${baseUrl}/api/order/admin/order/${order_id}`;
+        
+        return this.http.get<OrderEntity> (url, {
+            headers:{'authorization': this.token}
+        }).pipe(
+             map((response) => {
+                 if (response.status) {
+                     return response.data;
                  }
  
                  throw new Error(response.msg);

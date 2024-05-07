@@ -1,4 +1,4 @@
-<div id="loginbox">           
+<!-- <div id="loginbox">           
     <div class="page-header">
         <h3><i class="fa fa-lock"></i>Login</h3>
     </div>
@@ -23,4 +23,63 @@
             }
         </button>
     </form>
+</div> -->
+
+<div class="login-page" style="min-height: 496.781px;">
+    <div class="login-box">
+        <div class="login-logo">
+            <a><b>NAGA JI</b></a>
+        </div>
+
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in</p>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Username" name="username" [(ngModel)]="username" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" placeholder="Password" name="pass" [(ngModel)]="password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            @if (error) {
+                                <p style="margin-top:10px;color:#ff0000;font-family:Arial;text-align:center" id="perror">{{error}}</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">
+                                    Remember Me
+                                </label>
+                            </div>
+                        </div> -->
+
+                        <div class="col-12">
+                            <button type="submit" (click)="onSubmit()" [disabled]="loading" class="btn btn-primary btn-block">
+                                Sign In
+                                @if (loading) {
+                                    <span class="loader"></span>
+                                }
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

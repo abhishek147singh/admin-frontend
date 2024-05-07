@@ -7,6 +7,7 @@ import { ManageBrandComponent } from './presentaion/screens/manage-brand/manage-
 import { ManageCategoryComponent } from './presentaion/screens/manage-category/manage-category.component';
 import { ManageFeaturedProductsComponent } from './presentaion/screens/manage-featured-products/manage-featured-products.component';
 import { ManageOrdersComponent } from './presentaion/screens/manage-orders/manage-orders.component';
+import { ManageUserComponent } from './presentaion/screens/manage-user/manage-user.component';
 
 export const routes: Routes = [
     {path:'login', component:LoginComponent},
@@ -20,6 +21,7 @@ export const routes: Routes = [
             {path:'manage-category', component:ManageCategoryComponent},
             {path:'manage-featured-products', component:ManageFeaturedProductsComponent},
             {path:'manage-orders', component:ManageOrdersComponent},
+            {path:'manage-users', component:ManageUserComponent},
         ]
     },
 ];

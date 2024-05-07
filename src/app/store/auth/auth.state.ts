@@ -10,7 +10,7 @@ export const initialState : AuthState = getIntialState();
 
 function getIntialState(){
     const secureStorage = new SecureStorageService();
-    const authState = secureStorage.getItem('auth');
+    const authState = secureStorage.getItem('adminAuth');
 
     if(authState){
         return authState;

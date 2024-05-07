@@ -9,11 +9,19 @@ import { DtAddButtonComponent } from '../dt-add-button/dt-add-button.component';
 import { TableColType } from '../../../core/domain/Datatable/TableColType.model';
 import { TableColEnum } from '../../../core/enumes/TableColDataType.enums';
 import { MarkAsDeliveredBtnComponent } from '../mark-as-delivered-btn/mark-as-delivered-btn.component';
+import { DtShowBtnComponent } from '../dt-show-btn/dt-show-btn.component';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [DtDeleteButtonComponent, DtEditButtonComponent, DtAddButtonComponent ,DataTablesModule, MarkAsDeliveredBtnComponent],
+  imports: [
+    DtDeleteButtonComponent, 
+    DtEditButtonComponent, 
+    DtAddButtonComponent,
+    DataTablesModule, 
+    MarkAsDeliveredBtnComponent,
+    DtShowBtnComponent
+  ],
   templateUrl: './datatable.component.html',
   styleUrl: './datatable.component.scss'
 })
@@ -48,6 +56,8 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Output() onMarkAsDelivered: EventEmitter<any> = new EventEmitter<any> ();
 
+  @Output() Show: EventEmitter<any> = new EventEmitter<any> ();
+
   permissionSubscription: Subscription | undefined;
   dataObsSubscription: Subscription | undefined;
 
@@ -59,6 +69,7 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('editNg') editNg: TemplateRef<DtEditButtonComponent> | undefined;
   @ViewChild('removeNg') removeNg: TemplateRef<DtDeleteButtonComponent> | undefined;
   @ViewChild('addNg') addNg: TemplateRef<DtDeleteButtonComponent> | undefined;
+  @ViewChild('showNg') showNg: TemplateRef<DtShowBtnComponent> | undefined;
   @ViewChild('markAsDelivered') markAsDelivered: TemplateRef<DtDeleteButtonComponent> | undefined;
 
   hasData:boolean = false;
@@ -200,6 +211,21 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
           },
           orderable: false
         })
+      }else if(col.type === TableColEnum.show){
+        colums.push({
+          title:'Show',
+          width:'40px',
+          name: 'show',
+          data: '_id',
+          className: 'dt-center editor-edit',
+          defaultContent: '',
+          ngTemplateRef: {
+            ref: this.showNg,
+            context: {
+              captureEvents: this.onShow.bind(this)
+            }
+          }
+        })
       }else if(col.type === TableColEnum.isDeliveredBtn){
         colums.push({
           title:'Actions',
@@ -224,8 +250,11 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
           className: 'dt-center editor-edit',
           render: function (data: any, type: any, row: any) {
             const url = data[col.data];
-
-            return '<img style="width:150px;height:100%;" src="' + url +'" class="img-data" >';
+            if(url){
+              return '<img style="width:150px;height:100%;" src="' + url +'" class="img-data" >';
+            }else{
+              return 'null';
+            }
           },
           orderable: false
         })
@@ -270,6 +299,10 @@ export class DatatableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onAdd(event: ComponentDataTableEventType) {
     this.Add.emit(event.data);
+  }
+
+  onShow(event: ComponentDataTableEventType) {
+    this.Show.emit(event.data);
   }
 
   onToggleActive(event: ComponentDataTableEventType){

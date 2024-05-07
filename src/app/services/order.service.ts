@@ -4,6 +4,7 @@ import { IOrderService } from "../core/services/IOrder.service";
 import { OrderRepository } from "../data/repositories/order.repository";
 import { OrderListItem } from "../core/domain/orders/order-list-item.model";
 import { SimpleResponse } from "../core/domain/simple-response.model";
+import { OrderModel } from "../core/domain/orders/order.model";
 
 @Injectable({
     providedIn:'root'
@@ -21,5 +22,9 @@ export class OrderService extends IOrderService{
 
     override markAsDelivered(order_id: string): Observable<SimpleResponse> {
         return this.orderRepository.markAsDelivered(order_id);
+    }
+
+    override getOrderDetails(order_id: string): Observable<OrderModel> {
+        return this.orderRepository.getOrderDetails(order_id);
     }
 }

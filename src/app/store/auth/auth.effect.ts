@@ -23,7 +23,7 @@ export class AuthEffect {
                 return this.authService.login(action.email, action.pass).pipe(
                     map((data) =>{ 
                         this.router.navigate([action.redirectionUrl]);
-                        this.secureStorageService.setItem('auth', data);
+                        this.secureStorageService.setItem('adminAuth', data);
                        return loginSuccess({ data });
                     }),
                     catchError((err) => {
@@ -39,7 +39,7 @@ export class AuthEffect {
         this.actions$.pipe(
             ofType(logout),
             switchMap((action) => {
-                this.secureStorageService.removeItem('auth');
+                this.secureStorageService.removeItem('adminAuth');
                 this.router.navigate(['login']);
                 return of(dummy());
             })
